@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/paint-brush/static/css/main.8b0b09c1.css",
+    "main.js": "/paint-brush/static/js/main.965e49b9.js",
+    "index.html": "/paint-brush/index.html",
+    "main.8b0b09c1.css.map": "/paint-brush/static/css/main.8b0b09c1.css.map",
+    "main.965e49b9.js.map": "/paint-brush/static/js/main.965e49b9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8b0b09c1.css",
+    "static/js/main.965e49b9.js"
+  ]
+}
