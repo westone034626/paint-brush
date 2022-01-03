@@ -1,6 +1,18 @@
 import styles from './App.module.css';
 import { useCanvas } from './hooks';
 
+export enum COLORS {
+  BLACK = '#2C2C2C',
+  WHITE = 'white',
+  RED = '#FF3B30',
+  ORANGE = '#FF9500',
+  YELLOW = '#FFCC00',
+  GREEN = '#4CD963',
+  SKYBLUE = '#5AC8FA',
+  BLUE = '#0579FF',
+  INDIGO = '#5856D6',
+}
+
 function App() {
   const colors = [
     '#2C2C2C',
@@ -12,13 +24,12 @@ function App() {
     '#5AC8FA',
     '#0579FF',
     '#5856D6',
-  ];
+  ] as COLORS[];
   const {
     canvasRef,
     lineWidth,
     isPaintMode,
-    strokeColor,
-    filledColor,
+    color,
     mouseDraw,
     startMouseDrawing,
     finishMouseDrawing,
@@ -65,27 +76,26 @@ function App() {
         }}
       />
       <ul className={styles.colors}>
-        {colors.map((color) => {
-          const isSelectedColor =
-            (isPaintMode && strokeColor === color) ||
-            (!isPaintMode && filledColor === color);
+        {colors.map((c) => {
+          const isSelectedColor = c === color;
+
           return (
             <li
-              key={color}
+              key={c}
               className={
                 isSelectedColor
                   ? `${styles.color} ${styles.selected}`
                   : styles.color
               }
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: c }}
               onClick={() => {
-                changeColor(color);
+                changeColor(c);
               }}
             >
               {isSelectedColor && (
                 <div
                   style={{
-                    color: color === 'white' ? '#2C2C2C' : 'white',
+                    color: c === COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE,
                     fontWeight: 'bold',
                   }}
                 >

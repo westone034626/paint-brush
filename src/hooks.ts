@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { COLORS } from './App';
 
 interface IUseInput {
   initialState?: string;
@@ -40,8 +41,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isMouseDrawing, setIsMouseDrawing] = useState(false);
   const [isTouchDrawing, setIsTouchDrawing] = useState(false);
-  const [strokeColor, setStrokeColor] = useState('black');
-  const [filledColor, setFilledColor] = useState('white');
+  const [color, setColor] = useState<COLORS>(COLORS.BLACK);
   const [lineWidth, setLineWidth] = useState(2.5);
   const { value: isPaintMode, toggle: toggleMode } = useToggle({
     initialValue: true,
@@ -55,8 +55,8 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     link.click();
   };
 
-  const changeColor = (color: string) => {
-    isPaintMode ? setStrokeColor(color) : setFilledColor(color);
+  const changeColor = (color: COLORS) => {
+    setColor(color);
   };
   const changeWidth = (width: number) => {
     setLineWidth(width);
@@ -84,7 +84,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
         canvasRef.current.width,
         canvasRef.current.height
       );
-      contextRef.current.fillStyle = filledColor;
+      contextRef.current.fillStyle = color;
     }
   };
   const setCanvas = () => {
@@ -97,16 +97,16 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     const ctx = canvasRef.current.getContext('2d');
     if (!ctx) return;
     ctx.lineWidth = 2.5;
-    ctx.strokeStyle = strokeColor;
-    ctx.fillStyle = filledColor;
+    ctx.strokeStyle = color;
+    ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     contextRef.current = ctx;
   };
   const setCanvasContext = () => {
     if (!contextRef.current) return;
     contextRef.current.lineWidth = 2.5;
-    contextRef.current.strokeStyle = strokeColor;
-    contextRef.current.fillStyle = filledColor;
+    contextRef.current.strokeStyle = color;
+    contextRef.current.fillStyle = color;
     contextRef.current.lineWidth = lineWidth;
   };
   useEffect(() => {
@@ -125,7 +125,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
 
   useEffect(() => {
     setCanvasContext();
-  }, [strokeColor, filledColor, lineWidth]);
+  }, [color]);
   const mouseDraw = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
@@ -178,8 +178,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     canvasRef,
     isPaintMode,
     lineWidth,
-    filledColor,
-    strokeColor,
+    color,
     mouseDraw,
     startMouseDrawing,
     finishMouseDrawing,
