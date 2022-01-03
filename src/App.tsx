@@ -23,6 +23,7 @@ function App() {
     finishTouchDrawing,
     changeColor,
     changeWidth,
+    clear,
   } = useCanvas();
   changeWidth(Number(range.value));
   return (
@@ -38,6 +39,7 @@ function App() {
         className={styles.canvas}
       ></canvas>
       <div className={styles.buttons}>
+        <button onClick={clear}>clear</button>
         <button>fill</button>
         <button>save</button>
       </div>

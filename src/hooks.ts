@@ -34,6 +34,17 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const changeWidth = (width: number) => {
     if (contextRef.current) contextRef.current.lineWidth = width;
   };
+  const clear = () => {
+    if (canvasRef.current && contextRef.current) {
+      contextRef.current.fillStyle = 'white';
+      contextRef.current.fillRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+    }
+  };
   const setCanvas = () => {
     if (canvasRef.current) {
       canvasRef.current.style.touchAction = 'none';
@@ -45,6 +56,13 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
       if (context) {
         context.lineWidth = 2.5;
         context.strokeStyle = 'black';
+        context.fillStyle = 'white';
+        context.fillRect(
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
         contextRef.current = context;
       }
     }
@@ -120,5 +138,6 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     finishTouchDrawing,
     changeColor,
     changeWidth,
+    clear,
   };
 };
