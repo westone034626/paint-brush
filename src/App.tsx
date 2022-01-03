@@ -12,7 +12,7 @@ function App() {
     'teal',
     'tomato',
   ];
-  const range = useInput('2.5');
+  const range = useInput({ initialState: '2.5' });
   const {
     canvasRef,
     mouseDraw,

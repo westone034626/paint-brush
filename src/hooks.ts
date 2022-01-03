@@ -1,6 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-export const useInput = (initialState?: string) => {
+interface IUseInput {
+  initialState?: string;
+}
+
+export const useInput = ({ initialState }: IUseInput = {}) => {
   const [value, setValue] = useState<string>(initialState ?? '');
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
