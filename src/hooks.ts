@@ -152,10 +152,10 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     setIsMouseDrawing(false);
   };
   const touchDraw = (event: React.TouchEvent<HTMLCanvasElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const { pageX, pageY } = event.nativeEvent.touches[0];
-    const offsetX = pageX - rect.left;
-    const offsetY = pageY - rect.top;
+    const { left, top } = event.currentTarget.getBoundingClientRect();
+    const { clientX, clientY } = event.nativeEvent.touches[0];
+    const offsetX = clientX - left;
+    const offsetY = clientY - top;
     if (isTouchDrawing && isPaintMode) {
       contextRef.current?.lineTo(offsetX, offsetY);
       contextRef.current?.stroke();
@@ -163,10 +163,10 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   };
   const startTouchDrawing = (event: React.TouchEvent<HTMLCanvasElement>) => {
     setIsTouchDrawing(true);
-    const rect = event.currentTarget.getBoundingClientRect();
-    const { pageX, pageY } = event.nativeEvent.touches[0];
-    const offsetX = pageX - rect.left;
-    const offsetY = pageY - rect.top;
+    const { left, top } = event.currentTarget.getBoundingClientRect();
+    const { clientX, clientY } = event.nativeEvent.touches[0];
+    const offsetX = clientX - left;
+    const offsetY = clientY - top;
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
   };
