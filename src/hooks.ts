@@ -76,6 +76,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
         canvasRef.current.width,
         canvasRef.current.height
       );
+      contextRef.current.fillStyle = filledColor;
     }
   };
   const setCanvas = () => {
