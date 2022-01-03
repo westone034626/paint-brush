@@ -41,10 +41,13 @@ export const useCanvas = (aspectRatio?: string) => {
       }
     }
   };
-  // useEffect(() => {
-  //   window.addEventListener('resize', setCanvas);
-  //   return () => window.removeEventListener('resize', setCanvas);
-  // }, []);
+  useEffect(() => {
+    let windowWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (windowWidth !== window.innerWidth) setCanvas();
+    });
+    return () => window.removeEventListener('resize', setCanvas);
+  }, []);
   useLayoutEffect(() => {
     setCanvas();
   }, []);
