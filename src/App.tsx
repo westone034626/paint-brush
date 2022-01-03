@@ -12,9 +12,10 @@ function App() {
     'teal',
     'tomato',
   ];
-  const range = useInput({ initialState: '2.5' });
   const {
     canvasRef,
+    lineWidth,
+    isPaintMode,
     mouseDraw,
     startMouseDrawing,
     finishMouseDrawing,
@@ -23,12 +24,11 @@ function App() {
     finishTouchDrawing,
     changeColor,
     changeWidth,
-    isPaintMode,
     changeMode,
     clear,
     fillColor,
   } = useCanvas();
-  changeWidth(Number(range.value));
+
   return (
     <div className={styles.container}>
       <canvas
@@ -47,7 +47,19 @@ function App() {
         <button onClick={changeMode}>{isPaintMode ? 'fill' : 'paint'}</button>
         <button>save</button>
       </div>
-      <input type="range" min={0.1} max={5} step={0.1} {...range} />
+      <input
+        type="range"
+        min={0.1}
+        max={5}
+        step={0.1}
+        value={lineWidth}
+        onChange={(e) => {
+          const {
+            target: { value },
+          } = e;
+          changeWidth(Number(value));
+        }}
+      />
       <ul className={styles.colors}>
         {colors.map((color) => (
           <li

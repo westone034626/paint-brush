@@ -42,7 +42,8 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const [isTouchDrawing, setIsTouchDrawing] = useState(false);
   const [strokeColor, setStrokeColor] = useState('black');
   const [filledColor, setFilledColor] = useState('white');
-  const { value: isPaintMode, toggle: togglePaintMode } = useToggle({
+  const [lineWidth, setLineWidth] = useState(2.5);
+  const { value: isPaintMode, toggle: toggleMode } = useToggle({
     initialValue: true,
   });
 
@@ -50,10 +51,10 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     isPaintMode ? setStrokeColor(color) : setFilledColor(color);
   };
   const changeWidth = (width: number) => {
-    if (contextRef.current) contextRef.current.lineWidth = width;
+    setLineWidth(width);
   };
   const changeMode = () => {
-    togglePaintMode();
+    toggleMode();
   };
   const fillColor = () => {
     if (isPaintMode) return;
@@ -99,6 +100,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
       contextRef.current.lineWidth = 2.5;
       contextRef.current.strokeStyle = strokeColor;
       contextRef.current.fillStyle = filledColor;
+      contextRef.current.lineWidth = lineWidth;
     }
   };
   useEffect(() => {
@@ -117,14 +119,14 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
 
   useEffect(() => {
     setCanvasContext();
-  }, [strokeColor, filledColor]);
+  }, [strokeColor, filledColor, lineWidth]);
   const mouseDraw = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
     const {
       nativeEvent: { offsetX, offsetY },
     } = event;
-    if (isMouseDrawing) {
+    if (isMouseDrawing && isPaintMode) {
       contextRef.current?.lineTo(offsetX, offsetY);
       contextRef.current?.stroke();
     }
@@ -148,7 +150,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     const { pageX, pageY } = event.nativeEvent.touches[0];
     const offsetX = pageX - rect.left;
     const offsetY = pageY - rect.top;
-    if (isTouchDrawing) {
+    if (isTouchDrawing && isPaintMode) {
       contextRef.current?.lineTo(offsetX, offsetY);
       contextRef.current?.stroke();
     }
@@ -180,5 +182,6 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     isPaintMode,
     changeMode,
     fillColor,
+    lineWidth,
   };
 };
