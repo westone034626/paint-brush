@@ -8,4 +8,4 @@
 
 - [x] clear 기능 구현
 - [x] fill 기능 구현
-- [ ] save 기능 구현
+- [x] save 기능 구현

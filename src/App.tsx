@@ -29,6 +29,7 @@ function App() {
     changeMode,
     clear,
     fillColor,
+    save,
   } = useCanvas();
 
   return (
@@ -47,7 +48,7 @@ function App() {
       <div className={styles.buttons}>
         <button onClick={clear}>clear</button>
         <button onClick={changeMode}>{isPaintMode ? 'fill' : 'paint'}</button>
-        <button>save</button>
+        <button onClick={save}>save</button>
       </div>
       <input
         type="range"

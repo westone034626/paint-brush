@@ -47,6 +47,14 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     initialValue: true,
   });
 
+  const save = () => {
+    const image = canvasRef.current?.toDataURL();
+    const link = document.createElement('a');
+    link.href = image as string;
+    link.download = 'paint-brush';
+    link.click();
+  };
+
   const changeColor = (color: string) => {
     isPaintMode ? setStrokeColor(color) : setFilledColor(color);
   };
@@ -183,5 +191,6 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     clear,
     changeMode,
     fillColor,
+    save,
   };
 };
