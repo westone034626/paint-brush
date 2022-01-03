@@ -65,21 +65,36 @@ function App() {
         }}
       />
       <ul className={styles.colors}>
-        {colors.map((color) => (
-          <li
-            key={color}
-            className={
-              (isPaintMode && strokeColor === color) ||
-              (!isPaintMode && filledColor === color)
-                ? `${styles.color} ${styles.selected}`
-                : styles.color
-            }
-            style={{ backgroundColor: color }}
-            onClick={() => {
-              changeColor(color);
-            }}
-          ></li>
-        ))}
+        {colors.map((color) => {
+          const isSelectedColor =
+            (isPaintMode && strokeColor === color) ||
+            (!isPaintMode && filledColor === color);
+          return (
+            <li
+              key={color}
+              className={
+                isSelectedColor
+                  ? `${styles.color} ${styles.selected}`
+                  : styles.color
+              }
+              style={{ backgroundColor: color }}
+              onClick={() => {
+                changeColor(color);
+              }}
+            >
+              {isSelectedColor && (
+                <div
+                  style={{
+                    color: color === 'white' ? '#2C2C2C' : 'white',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  ✓
+                </div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
