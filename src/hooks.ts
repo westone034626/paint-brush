@@ -12,7 +12,11 @@ export const useInput = (initialState?: string) => {
   return { value, onChange };
 };
 
-export const useCanvas = (aspectRatio?: string) => {
+interface IUseCanvas {
+  aspectRatio?: string;
+}
+
+export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const [widthRatio, heightRatio] = (aspectRatio ?? '1 / 1')
     .split('/')
     .map((wAndH) => Number(wAndH.trim()));
@@ -104,7 +108,6 @@ export const useCanvas = (aspectRatio?: string) => {
   };
   return {
     canvasRef,
-    contextRef,
     mouseDraw,
     startMouseDrawing,
     finishMouseDrawing,
