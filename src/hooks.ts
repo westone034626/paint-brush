@@ -43,6 +43,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const [isTouchDrawing, setIsTouchDrawing] = useState(false);
   const [color, setColor] = useState<COLORS>(COLORS.BLACK);
   const [lineWidth, setLineWidth] = useState(2.5);
+  const [canvasUndoList, setCanvasUndoList] = useState<string[]>([]);
   const { value: isPaintMode, toggle: toggleMode } = useToggle({
     initialValue: true,
   });
@@ -67,6 +68,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const fillColor = () => {
     if (isPaintMode) return;
     if (canvasRef.current && contextRef.current) {
+      setCanvasUndoList([...canvasUndoList, canvasRef.current.toDataURL()]);
       contextRef.current.fillRect(
         0,
         0,
@@ -77,6 +79,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   };
   const clear = () => {
     if (canvasRef.current && contextRef.current) {
+      setCanvasUndoList([...canvasUndoList, canvasRef.current.toDataURL()]);
       contextRef.current.fillStyle = 'white';
       contextRef.current.fillRect(
         0,
@@ -86,6 +89,22 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
       );
       contextRef.current.fillStyle = color;
     }
+  };
+  const undo = () => {
+    if (!canvasUndoList.length) return;
+    if (!canvasRef.current) return;
+    const { width: w, height: h } = canvasRef.current;
+    const preCanvasImage = canvasUndoList.pop() as string;
+
+    var img = new Image();
+    img.src = preCanvasImage;
+    img.onload = function () {
+      if (!contextRef.current) return;
+      contextRef.current.fillStyle = 'white';
+      contextRef.current?.fillRect(0, 0, w, h);
+      contextRef.current.fillStyle = color;
+      contextRef.current?.drawImage(img, 0, 0, w, h);
+    };
   };
   const setCanvas = () => {
     if (!canvasRef.current) return;
@@ -143,6 +162,8 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     const {
       nativeEvent: { offsetX, offsetY },
     } = event;
+    if (!canvasRef.current) return;
+    setCanvasUndoList([...canvasUndoList, canvasRef.current.toDataURL()]);
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
   };
@@ -162,6 +183,8 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   };
   const startTouchDrawing = (event: React.TouchEvent<HTMLCanvasElement>) => {
     setIsTouchDrawing(true);
+    if (!canvasRef.current) return;
+    setCanvasUndoList([...canvasUndoList, canvasRef.current.toDataURL()]);
     const { left, top } = event.currentTarget.getBoundingClientRect();
     const { clientX, clientY } = event.nativeEvent.touches[0];
     const offsetX = clientX - left;
@@ -190,5 +213,6 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     changeMode,
     fillColor,
     save,
+    undo,
   };
 };
