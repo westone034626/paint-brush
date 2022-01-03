@@ -3,14 +3,15 @@ import { useCanvas } from './hooks';
 
 function App() {
   const colors = [
+    '#2C2C2C',
     'white',
-    'black',
-    'red',
-    'green',
-    'blue',
-    'yellow',
-    'teal',
-    'tomato',
+    '#FF3B30',
+    '#FF9500',
+    '#FFCC00',
+    '#4CD963',
+    '#5AC8FA',
+    '#0579FF',
+    '#5856D6',
   ];
   const {
     canvasRef,
