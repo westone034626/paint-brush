@@ -46,9 +46,12 @@ export const useCanvas = (aspectRatio?: string) => {
     window.addEventListener('resize', () => {
       if (windowWidth !== window.innerWidth) setCanvas();
     });
-    return () => window.removeEventListener('resize', setCanvas);
+    return () =>
+      window.removeEventListener('resize', () => {
+        if (windowWidth !== window.innerWidth) setCanvas();
+      });
   }, []);
-  useLayoutEffect(() => {
+  useEffect(() => {
     setCanvas();
   }, []);
   const mouseDraw = (
