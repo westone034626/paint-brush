@@ -1,5 +1,5 @@
 import styles from './App.module.css';
-import { useInput } from './hooks';
+import { useCanvas, useInput } from './hooks';
 
 function App() {
   const colors = [
@@ -13,10 +13,16 @@ function App() {
     'tomato',
   ];
   const range = useInput('2.5');
-
+  const { canvasRef, draw, startDrawing, finishDrawing } = useCanvas();
   return (
     <div className={styles.container}>
-      <canvas className={styles.canvas}></canvas>
+      <canvas
+        ref={canvasRef}
+        onMouseMove={draw}
+        onMouseDown={startDrawing}
+        onMouseUp={finishDrawing}
+        className={styles.canvas}
+      ></canvas>
       <div className={styles.buttons}>
         <button>fill</button>
         <button>save</button>
