@@ -15,11 +15,10 @@ export const useInput = (initialState?: string) => {
 export const useCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
+  const [isMouseDrawing, setIsMouseDrawing] = useState(false);
+  const [isTouchDrawing, setIsTouchDrawing] = useState(false);
   const prepareCanvas = () => {
     if (canvasRef.current) {
-      canvasRef.current.width = 500;
-      canvasRef.current.height = 500;
       const context = canvasRef.current.getContext('2d');
       if (context) {
         context.lineWidth = 2.5;
@@ -28,31 +27,65 @@ export const useCanvas = () => {
       }
     }
   };
-  const draw = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+  const mouseDraw = (
+    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
+  ) => {
     const {
       nativeEvent: { offsetX, offsetY },
     } = event;
-    if (isDrawing) {
+    if (isMouseDrawing) {
       contextRef.current?.lineTo(offsetX, offsetY);
       contextRef.current?.stroke();
     }
   };
-  const startDrawing = (
+  const startMouseDrawing = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
-    setIsDrawing(true);
+    setIsMouseDrawing(true);
     const {
       nativeEvent: { offsetX, offsetY },
     } = event;
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
   };
-  const finishDrawing = () => {
+  const finishMouseDrawing = () => {
     if (contextRef.current) contextRef.current.closePath();
-    setIsDrawing(false);
+    setIsMouseDrawing(false);
+  };
+  const touchDraw = (event: React.TouchEvent<HTMLCanvasElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const { pageX, pageY } = event.nativeEvent.touches[0];
+    const offsetX = pageX - rect.left;
+    const offsetY = pageY - rect.top;
+    if (isTouchDrawing) {
+      contextRef.current?.lineTo(offsetX, offsetY);
+      contextRef.current?.stroke();
+    }
+  };
+  const startTouchDrawing = (event: React.TouchEvent<HTMLCanvasElement>) => {
+    setIsTouchDrawing(true);
+    const rect = event.currentTarget.getBoundingClientRect();
+    const { pageX, pageY } = event.nativeEvent.touches[0];
+    const offsetX = pageX - rect.left;
+    const offsetY = pageY - rect.top;
+    contextRef.current?.beginPath();
+    contextRef.current?.moveTo(offsetX, offsetY);
+  };
+  const finishTouchDrawing = () => {
+    if (contextRef.current) contextRef.current.closePath();
+    setIsTouchDrawing(false);
   };
   useLayoutEffect(() => {
     prepareCanvas();
   }, []);
-  return { canvasRef, contextRef, draw, startDrawing, finishDrawing };
+  return {
+    canvasRef,
+    contextRef,
+    mouseDraw,
+    startMouseDrawing,
+    finishMouseDrawing,
+    touchDraw,
+    startTouchDrawing,
+    finishTouchDrawing,
+  };
 };
