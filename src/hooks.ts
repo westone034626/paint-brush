@@ -80,29 +80,26 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     }
   };
   const setCanvas = () => {
-    if (canvasRef.current) {
-      canvasRef.current.style.touchAction = 'none';
-      canvasRef.current.style.width = '100%';
-      canvasRef.current.width = canvasRef.current.clientWidth;
-      canvasRef.current.height =
-        (heightRatio / widthRatio) * canvasRef.current.clientWidth;
-      const ctx = canvasRef.current.getContext('2d');
-      if (ctx) {
-        ctx.lineWidth = 2.5;
-        ctx.strokeStyle = strokeColor;
-        ctx.fillStyle = filledColor;
-        ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        contextRef.current = ctx;
-      }
-    }
+    if (!canvasRef.current) return;
+    canvasRef.current.style.touchAction = 'none';
+    canvasRef.current.style.width = '100%';
+    canvasRef.current.width = canvasRef.current.clientWidth;
+    canvasRef.current.height =
+      (heightRatio / widthRatio) * canvasRef.current.clientWidth;
+    const ctx = canvasRef.current.getContext('2d');
+    if (!ctx) return;
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = strokeColor;
+    ctx.fillStyle = filledColor;
+    ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    contextRef.current = ctx;
   };
   const setCanvasContext = () => {
-    if (contextRef.current) {
-      contextRef.current.lineWidth = 2.5;
-      contextRef.current.strokeStyle = strokeColor;
-      contextRef.current.fillStyle = filledColor;
-      contextRef.current.lineWidth = lineWidth;
-    }
+    if (!contextRef.current) return;
+    contextRef.current.lineWidth = 2.5;
+    contextRef.current.strokeStyle = strokeColor;
+    contextRef.current.fillStyle = filledColor;
+    contextRef.current.lineWidth = lineWidth;
   };
   useEffect(() => {
     let windowWidth = window.innerWidth;

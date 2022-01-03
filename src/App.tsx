@@ -1,5 +1,5 @@
 import styles from './App.module.css';
-import { useCanvas, useInput } from './hooks';
+import { useCanvas } from './hooks';
 
 function App() {
   const colors = [
