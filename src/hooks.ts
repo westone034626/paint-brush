@@ -90,6 +90,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
       contextRef.current.fillStyle = color;
     }
   };
+  const redo = () => {};
   const undo = () => {
     if (!canvasUndoList.length) return;
     if (!canvasRef.current) return;
@@ -214,5 +215,6 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     fillColor,
     save,
     undo,
+    redo,
   };
 };

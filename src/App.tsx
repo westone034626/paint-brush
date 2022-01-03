@@ -43,6 +43,7 @@ function App() {
     fillColor,
     save,
     undo,
+    redo,
   } = useCanvas();
 
   return (
@@ -63,6 +64,7 @@ function App() {
         <button onClick={changeMode}>{isPaintMode ? 'fill' : 'paint'}</button>
         <button onClick={save}>save</button>
         <button onClick={undo}>undo</button>
+        <button onClick={redo}>redo</button>
       </div>
       <input
         type="range"
