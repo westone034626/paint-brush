@@ -23,7 +23,10 @@ function App() {
     finishTouchDrawing,
     changeColor,
     changeWidth,
+    isPaintMode,
+    changeMode,
     clear,
+    fillColor,
   } = useCanvas();
   changeWidth(Number(range.value));
   return (
@@ -36,11 +39,12 @@ function App() {
         onTouchStart={startTouchDrawing}
         onTouchEnd={finishTouchDrawing}
         onTouchMove={touchDraw}
+        onClick={fillColor}
         className={styles.canvas}
       ></canvas>
       <div className={styles.buttons}>
         <button onClick={clear}>clear</button>
-        <button>fill</button>
+        <button onClick={changeMode}>{isPaintMode ? 'fill' : 'paint'}</button>
         <button>save</button>
       </div>
       <input type="range" min={0.1} max={5} step={0.1} {...range} />

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface IUseInput {
   initialState?: string;
@@ -16,6 +16,18 @@ export const useInput = ({ initialState }: IUseInput = {}) => {
   return { value, onChange };
 };
 
+interface IUseToggle {
+  initialValue?: boolean;
+}
+
+const useToggle = ({ initialValue }: IUseToggle = {}) => {
+  const [value, setValue] = useState(initialValue ?? true);
+  const toggle = () => {
+    setValue((prev) => !prev);
+  };
+  return { value, toggle };
+};
+
 interface IUseCanvas {
   aspectRatio?: string;
 }
@@ -28,11 +40,31 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isMouseDrawing, setIsMouseDrawing] = useState(false);
   const [isTouchDrawing, setIsTouchDrawing] = useState(false);
+  const [strokeColor, setStrokeColor] = useState('black');
+  const [filledColor, setFilledColor] = useState('white');
+  const { value: isPaintMode, toggle: togglePaintMode } = useToggle({
+    initialValue: true,
+  });
+
   const changeColor = (color: string) => {
-    if (contextRef.current) contextRef.current.strokeStyle = color;
+    isPaintMode ? setStrokeColor(color) : setFilledColor(color);
   };
   const changeWidth = (width: number) => {
     if (contextRef.current) contextRef.current.lineWidth = width;
+  };
+  const changeMode = () => {
+    togglePaintMode();
+  };
+  const fillColor = () => {
+    if (isPaintMode) return;
+    if (canvasRef.current && contextRef.current) {
+      contextRef.current.fillRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+    }
   };
   const clear = () => {
     if (canvasRef.current && contextRef.current) {
@@ -52,19 +84,21 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
       canvasRef.current.width = canvasRef.current.clientWidth;
       canvasRef.current.height =
         (heightRatio / widthRatio) * canvasRef.current.clientWidth;
-      const context = canvasRef.current.getContext('2d');
-      if (context) {
-        context.lineWidth = 2.5;
-        context.strokeStyle = 'black';
-        context.fillStyle = 'white';
-        context.fillRect(
-          0,
-          0,
-          canvasRef.current.width,
-          canvasRef.current.height
-        );
-        contextRef.current = context;
+      const ctx = canvasRef.current.getContext('2d');
+      if (ctx) {
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = strokeColor;
+        ctx.fillStyle = filledColor;
+        ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        contextRef.current = ctx;
       }
+    }
+  };
+  const setCanvasContext = () => {
+    if (contextRef.current) {
+      contextRef.current.lineWidth = 2.5;
+      contextRef.current.strokeStyle = strokeColor;
+      contextRef.current.fillStyle = filledColor;
     }
   };
   useEffect(() => {
@@ -80,6 +114,10 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   useEffect(() => {
     setCanvas();
   }, []);
+
+  useEffect(() => {
+    setCanvasContext();
+  }, [strokeColor, filledColor]);
   const mouseDraw = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
@@ -139,5 +177,8 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     changeColor,
     changeWidth,
     clear,
+    isPaintMode,
+    changeMode,
+    fillColor,
   };
 };
