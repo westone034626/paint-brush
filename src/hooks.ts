@@ -170,6 +170,10 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   };
   return {
     canvasRef,
+    isPaintMode,
+    lineWidth,
+    filledColor,
+    strokeColor,
     mouseDraw,
     startMouseDrawing,
     finishMouseDrawing,
@@ -179,9 +183,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
     changeColor,
     changeWidth,
     clear,
-    isPaintMode,
     changeMode,
     fillColor,
-    lineWidth,
   };
 };

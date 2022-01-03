@@ -43,6 +43,8 @@
   gap: 10px;
   justify-content: center;
   margin-top: 20px;
+  justify-items: center;
+  align-items: center;
 }
 
 .color {
@@ -55,8 +57,7 @@
   transition: transform 0.1s ease-in-out;
 }
 
-.color:hover,
-.color:active {
-  opacity: 0.8;
-  transform: scale(0.95);
+.selected {
+  transform: scale(0.75);
+  border: 3px solid rgba(0, 255, 255, 0.5);
 }

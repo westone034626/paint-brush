@@ -16,6 +16,8 @@ function App() {
     canvasRef,
     lineWidth,
     isPaintMode,
+    strokeColor,
+    filledColor,
     mouseDraw,
     startMouseDrawing,
     finishMouseDrawing,
@@ -64,7 +66,12 @@ function App() {
         {colors.map((color) => (
           <li
             key={color}
-            className={styles.color}
+            className={
+              (isPaintMode && strokeColor === color) ||
+              (!isPaintMode && filledColor === color)
+                ? `${styles.color} ${styles.selected}`
+                : styles.color
+            }
             style={{ backgroundColor: color }}
             onClick={() => {
               changeColor(color);
