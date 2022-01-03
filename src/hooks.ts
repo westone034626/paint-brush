@@ -32,16 +32,20 @@ export const useCanvas = () => {
     const {
       nativeEvent: { offsetX, offsetY },
     } = event;
-    if (!isDrawing) {
-      contextRef.current?.beginPath();
-      contextRef.current?.moveTo(offsetX, offsetY);
-    } else {
+    if (isDrawing) {
       contextRef.current?.lineTo(offsetX, offsetY);
       contextRef.current?.stroke();
     }
   };
-  const startDrawing = () => {
+  const startDrawing = (
+    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
+  ) => {
     setIsDrawing(true);
+    const {
+      nativeEvent: { offsetX, offsetY },
+    } = event;
+    contextRef.current?.beginPath();
+    contextRef.current?.moveTo(offsetX, offsetY);
   };
   const finishDrawing = () => {
     if (contextRef.current) contextRef.current.closePath();
