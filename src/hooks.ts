@@ -104,7 +104,6 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   };
   const setCanvasContext = () => {
     if (!contextRef.current) return;
-    contextRef.current.lineWidth = 2.5;
     contextRef.current.strokeStyle = color;
     contextRef.current.fillStyle = color;
     contextRef.current.lineWidth = lineWidth;
@@ -125,7 +124,7 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
 
   useEffect(() => {
     setCanvasContext();
-  }, [color]);
+  }, [color, lineWidth]);
   const mouseDraw = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
