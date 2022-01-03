@@ -20,6 +20,12 @@ export const useCanvas = (aspectRatio?: string) => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isMouseDrawing, setIsMouseDrawing] = useState(false);
   const [isTouchDrawing, setIsTouchDrawing] = useState(false);
+  const changeColor = (color: string) => {
+    if (contextRef.current) contextRef.current.strokeStyle = color;
+  };
+  const changeWidth = (width: number) => {
+    if (contextRef.current) contextRef.current.lineWidth = width;
+  };
   const setCanvas = () => {
     if (canvasRef.current) {
       canvasRef.current.style.touchAction = 'none';
@@ -99,5 +105,7 @@ export const useCanvas = (aspectRatio?: string) => {
     touchDraw,
     startTouchDrawing,
     finishTouchDrawing,
+    changeColor,
+    changeWidth,
   };
 };

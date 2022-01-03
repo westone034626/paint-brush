@@ -21,7 +21,10 @@ function App() {
     touchDraw,
     startTouchDrawing,
     finishTouchDrawing,
+    changeColor,
+    changeWidth,
   } = useCanvas();
+  changeWidth(Number(range.value));
   return (
     <div className={styles.container}>
       <canvas
@@ -45,6 +48,9 @@ function App() {
             key={color}
             className={styles.color}
             style={{ backgroundColor: color }}
+            onClick={() => {
+              changeColor(color);
+            }}
           ></li>
         ))}
       </ul>
