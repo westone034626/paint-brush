@@ -33,8 +33,6 @@ function App() {
         onTouchEnd={finishTouchDrawing}
         onTouchMove={touchDraw}
         className={styles.canvas}
-        width={500}
-        height={500}
       ></canvas>
       <div className={styles.buttons}>
         <button>fill</button>
