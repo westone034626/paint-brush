@@ -69,7 +69,10 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const fillColor = () => {
     if (isPaintMode) return;
     if (canvasRef.current && contextRef.current) {
-      setCanvasUndoList([...canvasUndoList, canvasRef.current.toDataURL()]);
+      if (contextRef.current.fillStyle !== color.toLowerCase()) {
+        contextRef.current.fillStyle = color;
+        setCanvasUndoList([...canvasUndoList, canvasRef.current.toDataURL()]);
+      }
       contextRef.current.fillRect(
         0,
         0,
@@ -144,7 +147,6 @@ export const useCanvas = ({ aspectRatio }: IUseCanvas = {}) => {
   const setCanvasContext = () => {
     if (!contextRef.current) return;
     contextRef.current.strokeStyle = color;
-    contextRef.current.fillStyle = color;
     contextRef.current.lineWidth = lineWidth;
   };
   useEffect(() => {
